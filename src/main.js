@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import Axios from 'axios'
+import './registerServiceWorker'
 
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
