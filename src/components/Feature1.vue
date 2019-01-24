@@ -2,20 +2,19 @@
   <div>
     <table>
       <tr>
-        <th>#</th>
         <th>Month</th>
         <th>Total</th>
       </tr>
-      <tr v-for="(index, row) in featureData">
-        <td>{{ index }} + 1</td>
-        <td>{{row.month}}</td>
-        <td>{{row.total}}</td>
+      <tr v-for="row in featureData">
+        <td>{{ row.month }}</td>
+        <td>{{ row.total }}</td>
       </tr>
     </table>
   </div>
 </template>
 <script>
 import axios from "axios";
+import qs from "querystring";
 export default {
   data() {
     return {
@@ -27,26 +26,30 @@ export default {
     if (!this.$store.getters.isLoggedIn) {
       this.$router.push("/");
     }
-    this.featureData = this.getFeatureData();
+    this.getFeatureData();
   },
   methods: {
     getFeatureData: function() {
       const postData = {
-        value: "3",
-        date: "2019-01-13",
-        metric_id: "2"
+        metric_id: "1",
+        value: "47",
+        date: "20190126"
       };
-      axios({
-        url: "https://trackboard.doolta.com/v1/measure",
-        data: postData,
-        method: "POST",
+      const config = {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
-      })
+      };
+      const context = this;
+      return axios
+        .post(
+          "https://trackboard.doolta.com/v1/measure",
+          qs.stringify(postData),
+          config
+        )
         .then(resp => {
-          console.log(resp);
-          return resp.data;
+          context.featureData = resp.data;
+          return true;
         })
         .catch(err => {
           console.log(err);

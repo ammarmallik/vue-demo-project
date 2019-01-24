@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import qs from "querystring"
 
 Vue.use(Vuex)
 
@@ -66,7 +67,7 @@ export default new Vuex.Store({
                 commit('auth_request')
                 axios({
                         url: 'https://trackboard.doolta.com/signup_check',
-                        data: user,
+                        data: qs.stringify(user),
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
