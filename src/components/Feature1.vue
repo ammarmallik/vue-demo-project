@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div>
+      <form class="feature-form" @submit.prevent="getFeatureData">
+        <h1>Feature 1</h1>
+        <label>Metric ID:</label>
+        <input required v-model="metric_id" type="text" placeholder="Metric ID">
+        <label>Value</label>
+        <input required v-model="value" type="text" placeholder="Value">
+        <label>Date</label>
+        <input required v-model="date" type="text" placeholder="YYYYMMDD">
+        <hr>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
     <table>
       <tr>
         <th>Month</th>
@@ -18,6 +31,9 @@ import qs from "querystring";
 export default {
   data() {
     return {
+      value: "",
+      date: "",
+      metric_id: "",
       featureData: []
     };
   },
@@ -26,14 +42,13 @@ export default {
     if (!this.$store.getters.isLoggedIn) {
       this.$router.push("/");
     }
-    this.getFeatureData();
   },
   methods: {
     getFeatureData: function() {
       const postData = {
-        metric_id: "1",
-        value: "47",
-        date: "20190126"
+        metric_id: this.metric_id,
+        value: this.value,
+        date: this.date
       };
       const config = {
         headers: {
